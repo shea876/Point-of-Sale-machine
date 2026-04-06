@@ -1,0 +1,107 @@
+print("PROGRAM POINT OF SALE SYSTEM")
+#Inventory list
+inventory = {
+"bread": {"price": 500, "stock":30},
+"milk" : {"price": 350, "stock": 5},
+"eggs": {"price": 200, "stock":20},
+"rice": {"price" : 250, "stock" :40},
+"soap": {"price": 150, "stock" :68},
+"toothpaste": {"price": 450, "stock" :25},
+"water": {"price" :150, "stock" :45},
+"cheese": {"price": 350, "stock" : 56},
+"ketchup": { "price": 400, "stock":25},
+"tissue":{ "price" : 160, "stock":28},
+}
+cart=[]
+subtotal = 0
+continue_transaction = "yes"
+while continue_transaction == "yes":
+    print ("\n----------MAIN MENU----------")
+    print ("1 add product to cart")
+    print ("2 remove product from cart")
+    print ("3 View cart/stock")
+    print ("4 checkout")
+    print ("5 exit")
+    choice = input("enter your choice (1-5):")
+    
+    
+    #add product to cart
+    if choice == "1":
+        product_name=input("enter product name:")
+        if product_name not in inventory:
+            print("product does not exists ")
+        else:
+            quantity =int(input("enter quantity:"))
+            if quantity <= inventory[product_name]["stock"]:
+              cart.append([product_name, quantity])
+              inventory [product_name]["stock"] -=quantity
+              print("product added to cart")
+            else:
+              print("not enough stock")
+    
+    #remove product from cart
+    if choice == "2":
+        if len(cart) == 0:
+            print("cart is empty. Add product to cart.")
+        else:
+            product_name = input("enter product name to remove: ").lower()
+            for item in cart:
+                if product_name == item[0]:
+                    cart.remove(item)
+            else:
+                print ("product not in found in cart")
+
+    #view cart
+    if choice == "3":
+        print("----------CURRENT STOCK----------")
+        print(inventory)
+        print("")
+        print("----------Items In Cart----------")
+        if len(cart) == 0:
+            print("Cart is Empty")
+        else:
+            print(cart)
+        print("")
+
+    #checkout    
+    if choice == "4":
+        if len(cart) == 0:
+            print("cart is empty. Add product to cart.")
+        else:
+            for product_name,quantity in cart:
+                subtotal += inventory [product_name]["price"]*quantity
+            tax=subtotal * 0.10
+            if subtotal > 2000:
+                discount= subtotal * 0.10
+            else:
+                discount = 0
+            total = subtotal + tax - discount
+            print("subtotal:", subtotal)
+            print ("tax 10%", tax)
+            print("discount", discount)
+            amount_paid = int(input("enter amount paid: "))
+            if amount_paid < total:
+                print("insufficient funds")
+            else:
+                change = amount_paid - total
+                print ("----------RECEIPT----------")
+                print("store name: Best Buy Retail Store")
+                print ("products brought")
+                for item in cart:
+                    print (item)
+                print("subtotal: ", subtotal)
+                print("tax: ", tax)
+                print("discount: ", discount)
+                print("total: ", total)
+                print(f"amount paid: ", amount_paid)
+                print("change: ", change)
+                #print("Thank you for shopping with us")
+                #print ("products with stock < 10 😊")
+                #print ("product")
+                continue_transaction = "no"
+
+    #exit
+    if choice == "5":
+        continue_transaction ="no"
+
+print("Thank you for shopping with us 😊")
